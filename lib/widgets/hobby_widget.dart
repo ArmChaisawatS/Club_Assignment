@@ -1,10 +1,20 @@
+import 'package:club_assignment/controllors/form_controllor.dart';
+import 'package:club_assignment/models/club_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
 
-class HobbyWidget extends StatelessWidget {
-  final int index;
+class HobbyWidget extends StatefulWidget {
+  final int? index;
   final Function? onRemove;
+  const HobbyWidget({super.key, this.index, this.onRemove});
 
-  const HobbyWidget({super.key, required this.index, this.onRemove});
+  @override
+  State<HobbyWidget> createState() => _HobbyWidgetState();
+}
+
+class _HobbyWidgetState extends State<HobbyWidget> {
+  final FormControllor formControllor = Get.find();
+  final hobbycontrollor = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +30,33 @@ class HobbyWidget extends StatelessWidget {
             child: SizedBox(
               width: 320,
               child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                controller: hobbycontrollor,
+                onSaved: (newValue) {
+                  formControllor.addHobby(
+                    HobbyModel(
+                      hobbycontrollor.text,
+                    ),
+                  );
+                },
                 decoration: InputDecoration(
-                  hintText: "Hobby #${index + 1}",
+                  hintText: "Hobby #${widget.index! + 1}",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'This field is required.';
+                  }
+                  return null;
+                },
               ),
             ),
           ),
           IconButton(
             onPressed: () {
-              onRemove?.call();
+              widget.onRemove?.call();
             },
             icon: const Icon(Icons.delete),
           ),

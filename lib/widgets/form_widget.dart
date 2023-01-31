@@ -1,24 +1,25 @@
-import 'package:club_assignment/controllors/from_controllor.dart';
-import 'package:club_assignment/models/from_model.dart';
+import 'package:club_assignment/controllors/form_controllor.dart';
+import 'package:club_assignment/models/club_model.dart';
+import 'package:club_assignment/models/form_model.dart';
 import 'package:club_assignment/widgets/hobby_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class FromWidget extends StatefulWidget {
-  final int index;
-  const FromWidget({super.key, required this.index});
+class FormWidget extends StatefulWidget {
+  final int? index;
+  const FormWidget({super.key, this.index});
 
   @override
-  State<FromWidget> createState() => _FromWidgetState();
+  State<FormWidget> createState() => _FormWidgetState();
 }
 
-class _FromWidgetState extends State<FromWidget> {
-  final FormControllor fromControllor = Get.find();
+class _FormWidgetState extends State<FormWidget> {
+  final FormControllor formControllor = Get.find();
+  final firstnamecontrollor = TextEditingController();
+  final lastnamecontrollor = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    int indexHobby = 0;
-    FormModel fromHobbyItem = fromControllor.froms[widget.index];
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
@@ -30,7 +31,7 @@ class _FromWidgetState extends State<FromWidget> {
           Row(
             children: [
               Text(
-                "Member #${widget.index + 1}",
+                "Member #${widget.index! + 1}",
                 style: const TextStyle(
                   fontSize: 20,
                 ),
@@ -41,7 +42,7 @@ class _FromWidgetState extends State<FromWidget> {
               Expanded(
                 child: IconButton(
                   onPressed: () {
-                    fromControllor.removeFrom(widget.index);
+                    formControllor.removeForm(widget.index!);
                   },
                   icon: const Icon(Icons.delete),
                 ),
@@ -53,24 +54,47 @@ class _FromWidgetState extends State<FromWidget> {
           ),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            controller: firstnamecontrollor,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
               hintText: "Firstname",
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field is required.';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 10,
           ),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            controller: lastnamecontrollor,
+            onSaved: (newValue) {
+              formControllor.addMember(
+                MemberModel(
+                  firstnamecontrollor.text,
+                  lastnamecontrollor.text,
+                  formControllor.hobbys,
+                ),
+              );
+            },
             decoration: InputDecoration(
               hintText: "Lastname",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field is required.';
+              }
+              return null;
+            },
           ),
           const SizedBox(
             height: 10,
@@ -79,18 +103,19 @@ class _FromWidgetState extends State<FromWidget> {
             builder: (controllor) => ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: controllor.froms[widget.index].hobbyWidget.length,
+              itemCount:
+                  formControllor.forms[widget.index!].listHobbyWidget.length,
               itemBuilder: (context, index) {
-                indexHobby = index;
                 return Column(
                   children: [
                     const SizedBox(height: 10),
                     HobbyWidget(
-                      index: indexHobby,
+                      index: index,
                       onRemove: () {
                         setState(
                           () {
-                            fromHobbyItem.hobbyWidget.removeAt(index);
+                            controllor.forms[widget.index!].listHobbyWidget
+                                .removeAt(index);
                           },
                         );
                       },
@@ -124,9 +149,9 @@ class _FromWidgetState extends State<FromWidget> {
             onTap: () {
               setState(
                 () {
-                  fromHobbyItem.hobbyWidget.add(
-                    HobbyWidget(
-                      index: indexHobby,
+                  formControllor.forms[widget.index!].listHobbyWidget.add(
+                    FormHobbyModel(
+                      const HobbyWidget(),
                     ),
                   );
                 },

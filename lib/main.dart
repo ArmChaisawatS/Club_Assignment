@@ -1,4 +1,4 @@
-import 'package:club_assignment/views/from_page.dart';
+import 'package:club_assignment/views/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'app_binding.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FromPage(),
+      home: MyHomePage(),
     );
   }
 }
