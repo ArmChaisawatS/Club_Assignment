@@ -1,4 +1,4 @@
-import 'package:club_assignment/controllors/form_controllor.dart';
+import 'package:club_assignment/controllers/form_controller.dart';
 import 'package:club_assignment/models/club_model.dart';
 import 'package:club_assignment/models/form_model.dart';
 import 'package:club_assignment/widgets/form_widget.dart';
@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class FormPage extends StatelessWidget {
-  FormPage({super.key});
+  final int indexClub;
+  FormPage({super.key, required this.indexClub});
 
-  final FormControllor formControllor = Get.put(FormControllor());
+  final FormController formController = Get.find();
   final _formkey = GlobalKey<FormState>();
-  final clubnamecontrollor = TextEditingController();
+  final clubnamecontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +31,13 @@ class FormPage extends StatelessWidget {
                 children: [
                   TextFormField(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: clubnamecontrollor,
+                    controller: clubnamecontroller,
                     onSaved: (newValue) {
-                      formControllor.addClubname(
+                      formController.addClubname(
                         ClubModel(
-                            clubnamecontrollor.text, formControllor.members),
+                          clubnamecontroller.text,
+                          [],
+                        ),
                       );
                     },
                     decoration: InputDecoration(
@@ -47,7 +50,7 @@ class FormPage extends StatelessWidget {
                     validator: (value) {
                       if (value == null ||
                           value.isEmpty ||
-                          formControllor.forms.isEmpty) {
+                          formController.forms.isEmpty) {
                         return 'This field is required.';
                       }
                       return null;
@@ -56,24 +59,22 @@ class FormPage extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  GetX<FormControllor>(
-                    builder: (controller) {
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: controller.forms.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              FormWidget(
-                                index: index,
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
+                  Obx(
+                    () => ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: formController.forms.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          children: [
+                            const SizedBox(height: 10),
+                            FormWidget(
+                              index: index,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -97,7 +98,7 @@ class FormPage extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      formControllor.addForm(
+                      formController.addForm(
                         FormModel(
                           const FormWidget(),
                           [],
@@ -129,12 +130,10 @@ class FormPage extends StatelessWidget {
                     onTap: () {
                       if (_formkey.currentState!.validate()) {
                         _formkey.currentState?.save();
-                        formControllor.forms.clear();
-                        clubnamecontrollor.clear();
-                        formControllor.clubs.clear();
-                        formControllor.members.clear();
-                        formControllor.hobbys.clear();
-                        Navigator.pop(context);
+                        formController.clubs[indexClub].memberList
+                            .addAll(formController.members);
+                        formController.members.clear();
+                        Get.back();
                       }
                     },
                   )

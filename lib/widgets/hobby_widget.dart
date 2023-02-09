@@ -1,4 +1,4 @@
-import 'package:club_assignment/controllors/form_controllor.dart';
+import 'package:club_assignment/controllers/form_controller.dart';
 import 'package:club_assignment/models/club_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
@@ -13,8 +13,8 @@ class HobbyWidget extends StatefulWidget {
 }
 
 class _HobbyWidgetState extends State<HobbyWidget> {
-  final FormControllor formControllor = Get.find();
-  final hobbycontrollor = TextEditingController();
+  final FormController formController = Get.find();
+  final hobbycontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +31,13 @@ class _HobbyWidgetState extends State<HobbyWidget> {
               width: 320,
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: hobbycontrollor,
+                controller: hobbycontroller,
                 onSaved: (newValue) {
-                  formControllor.addHobby(
-                    HobbyModel(
-                      hobbycontrollor.text,
-                    ),
-                  );
+                  formController.addHobby(
+                      HobbyModel(
+                        hobbycontroller.text,
+                      ),
+                      formController.members.length);
                 },
                 decoration: InputDecoration(
                   hintText: "Hobby #${widget.index! + 1}",

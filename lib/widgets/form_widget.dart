@@ -1,4 +1,4 @@
-import 'package:club_assignment/controllors/form_controllor.dart';
+import 'package:club_assignment/controllers/form_controller.dart';
 import 'package:club_assignment/models/club_model.dart';
 import 'package:club_assignment/models/form_model.dart';
 import 'package:club_assignment/widgets/hobby_widget.dart';
@@ -14,9 +14,9 @@ class FormWidget extends StatefulWidget {
 }
 
 class _FormWidgetState extends State<FormWidget> {
-  final FormControllor formControllor = Get.find();
-  final firstnamecontrollor = TextEditingController();
-  final lastnamecontrollor = TextEditingController();
+  final FormController formController = Get.find();
+  final firstnamecontroller = TextEditingController();
+  final lastnamecontroller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class _FormWidgetState extends State<FormWidget> {
               Expanded(
                 child: IconButton(
                   onPressed: () {
-                    formControllor.removeForm(widget.index!);
+                    formController.removeForm(widget.index ?? 0);
                   },
                   icon: const Icon(Icons.delete),
                 ),
@@ -54,7 +54,7 @@ class _FormWidgetState extends State<FormWidget> {
           ),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            controller: firstnamecontrollor,
+            controller: firstnamecontroller,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
@@ -73,13 +73,13 @@ class _FormWidgetState extends State<FormWidget> {
           ),
           TextFormField(
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            controller: lastnamecontrollor,
+            controller: lastnamecontroller,
             onSaved: (newValue) {
-              formControllor.addMember(
+              formController.addMember(
                 MemberModel(
-                  firstnamecontrollor.text,
-                  lastnamecontrollor.text,
-                  formControllor.hobbys,
+                  firstnamecontroller.text,
+                  lastnamecontroller.text,
+                  [],
                 ),
               );
             },
@@ -99,12 +99,12 @@ class _FormWidgetState extends State<FormWidget> {
           const SizedBox(
             height: 10,
           ),
-          GetBuilder<FormControllor>(
-            builder: (controllor) => ListView.builder(
+          Obx(
+            () => ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount:
-                  formControllor.forms[widget.index!].listHobbyWidget.length,
+              itemCount: formController
+                  .forms[widget.index ?? 0].listHobbyWidget.length,
               itemBuilder: (context, index) {
                 return Column(
                   children: [
@@ -114,7 +114,8 @@ class _FormWidgetState extends State<FormWidget> {
                       onRemove: () {
                         setState(
                           () {
-                            controllor.forms[widget.index!].listHobbyWidget
+                            formController
+                                .forms[widget.index ?? 0].listHobbyWidget
                                 .removeAt(index);
                           },
                         );
@@ -149,11 +150,15 @@ class _FormWidgetState extends State<FormWidget> {
             onTap: () {
               setState(
                 () {
-                  formControllor.forms[widget.index!].listHobbyWidget.add(
-                    FormHobbyModel(
-                      const HobbyWidget(),
-                    ),
-                  );
+                  if (formController
+                          .forms[widget.index ?? 0].listHobbyWidget.length <
+                      5) {
+                    formController.forms[widget.index ?? 0].listHobbyWidget.add(
+                      FormHobbyModel(
+                        const HobbyWidget(),
+                      ),
+                    );
+                  }
                 },
               );
             },

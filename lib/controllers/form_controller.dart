@@ -2,11 +2,10 @@ import 'package:club_assignment/models/club_model.dart';
 import 'package:club_assignment/models/form_model.dart';
 import 'package:get/get.dart';
 
-class FormControllor extends GetxController {
+class FormController extends GetxController {
   List<FormModel> forms = List<FormModel>.empty().obs;
   List<ClubModel> clubs = List<ClubModel>.empty().obs;
   List<MemberModel> members = List<MemberModel>.empty().obs;
-  List<HobbyModel> hobbys = List<HobbyModel>.empty().obs;
 
   void addForm(FormModel form) {
     forms.add(form);
@@ -24,7 +23,7 @@ class FormControllor extends GetxController {
     members.add(memberModel);
   }
 
-  void addHobby(HobbyModel hobbyModel) {
-    hobbys.add(hobbyModel);
+  void addHobby(HobbyModel hobbyModel, int index) {
+    members[index - 1].hobbyList.add(hobbyModel);
   }
 }
