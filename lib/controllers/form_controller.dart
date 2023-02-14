@@ -23,7 +23,11 @@ class FormController extends GetxController {
     members.add(memberModel);
   }
 
-  void addHobby(HobbyModel hobbyModel, int index) {
+  void addMemberList(int index) {
+    clubs[index].memberList.addAll(members);
+  }
+
+  void addHobby(String hobbyModel, int index) {
     members[index - 1].hobbyList.add(hobbyModel);
   }
 }

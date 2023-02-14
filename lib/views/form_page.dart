@@ -1,3 +1,5 @@
+import 'package:club_assignment/components/button_comp.dart';
+import 'package:club_assignment/components/textformfield_comp.dart';
 import 'package:club_assignment/controllers/form_controller.dart';
 import 'package:club_assignment/models/club_model.dart';
 import 'package:club_assignment/models/form_model.dart';
@@ -19,7 +21,9 @@ class FormPage extends StatelessWidget {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Dynamic Fields"),
+          title: const Text(
+            "Dynamic Fields",
+          ),
         ),
         body: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -29,10 +33,10 @@ class FormPage extends StatelessWidget {
               key: _formkey,
               child: Column(
                 children: [
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                  TextFormFieldComp(
                     controller: clubnamecontroller,
-                    onSaved: (newValue) {
+                    title: "Clubname",
+                    onSaved: () {
                       formController.addClubname(
                         ClubModel(
                           clubnamecontroller.text,
@@ -40,24 +44,6 @@ class FormPage extends StatelessWidget {
                         ),
                       );
                     },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.emoji_emotions),
-                      hintText: "ClubName",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value == null ||
-                          value.isEmpty ||
-                          formController.forms.isEmpty) {
-                        return 'This field is required.';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   Obx(
                     () => ListView.builder(
@@ -79,24 +65,8 @@ class FormPage extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.purple,
-                      ),
-                      height: 40,
-                      child: const Center(
-                        child: Text(
-                          "ADD MEMBER",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                  ButtonComp(
+                    text: "ADD MEMBER",
                     onTap: () {
                       formController.addForm(
                         FormModel(
@@ -109,29 +79,12 @@ class FormPage extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(30),
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(30),
-                        color: Colors.purple,
-                      ),
-                      height: 40,
-                      child: const Center(
-                        child: Text(
-                          "SUBMIT",
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                  ButtonComp(
+                    text: "SUBMIT",
                     onTap: () {
                       if (_formkey.currentState!.validate()) {
                         _formkey.currentState?.save();
-                        formController.clubs[indexClub].memberList
-                            .addAll(formController.members);
+                        formController.addMemberList(indexClub);
                         formController.members.clear();
                         Get.back();
                       }

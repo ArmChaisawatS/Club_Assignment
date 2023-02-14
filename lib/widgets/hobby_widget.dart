@@ -1,5 +1,5 @@
+import 'package:club_assignment/components/textformfield_comp.dart';
 import 'package:club_assignment/controllers/form_controller.dart';
-import 'package:club_assignment/models/club_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 
@@ -27,38 +27,24 @@ class _HobbyWidgetState extends State<HobbyWidget> {
       child: Row(
         children: [
           Expanded(
-            child: SizedBox(
-              width: 320,
-              child: TextFormField(
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                controller: hobbycontroller,
-                onSaved: (newValue) {
-                  formController.addHobby(
-                      HobbyModel(
-                        hobbycontroller.text,
-                      ),
-                      formController.members.length);
-                },
-                decoration: InputDecoration(
-                  hintText: "Hobby #${widget.index! + 1}",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'This field is required.';
-                  }
-                  return null;
-                },
-              ),
+            child: TextFormFieldComp(
+              controller: hobbycontroller,
+              title: "Hobby #${widget.index! + 1}",
+              onSaved: () {
+                formController.addHobby(
+                  hobbycontroller.text,
+                  formController.members.length,
+                );
+              },
             ),
           ),
           IconButton(
             onPressed: () {
               widget.onRemove?.call();
             },
-            icon: const Icon(Icons.delete),
+            icon: const Icon(
+              Icons.delete,
+            ),
           ),
         ],
       ),

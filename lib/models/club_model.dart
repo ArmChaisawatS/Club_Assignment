@@ -7,11 +7,6 @@ class ClubModel {
 class MemberModel {
   String firstName;
   String lastName;
-  List<HobbyModel> hobbyList;
+  List<String> hobbyList;
   MemberModel(this.firstName, this.lastName, this.hobbyList);
-}
-
-class HobbyModel {
-  String hobby;
-  HobbyModel(this.hobby);
 }

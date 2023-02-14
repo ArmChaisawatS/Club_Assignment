@@ -1,3 +1,5 @@
+import 'package:club_assignment/components/button_comp.dart';
+import 'package:club_assignment/components/textformfield_comp.dart';
 import 'package:club_assignment/controllers/form_controller.dart';
 import 'package:club_assignment/models/club_model.dart';
 import 'package:club_assignment/models/form_model.dart';
@@ -44,7 +46,9 @@ class _FormWidgetState extends State<FormWidget> {
                   onPressed: () {
                     formController.removeForm(widget.index ?? 0);
                   },
-                  icon: const Icon(Icons.delete),
+                  icon: const Icon(
+                    Icons.delete,
+                  ),
                 ),
               ),
             ],
@@ -52,29 +56,17 @@ class _FormWidgetState extends State<FormWidget> {
           const SizedBox(
             height: 10,
           ),
-          TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+          TextFormFieldComp(
             controller: firstnamecontroller,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              hintText: "Firstname",
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field is required.';
-              }
-              return null;
-            },
+            title: "Firstname",
           ),
           const SizedBox(
             height: 10,
           ),
-          TextFormField(
-            autovalidateMode: AutovalidateMode.onUserInteraction,
+          TextFormFieldComp(
             controller: lastnamecontroller,
-            onSaved: (newValue) {
+            title: "Lastname",
+            onSaved: () {
               formController.addMember(
                 MemberModel(
                   firstnamecontroller.text,
@@ -83,21 +75,6 @@ class _FormWidgetState extends State<FormWidget> {
                 ),
               );
             },
-            decoration: InputDecoration(
-              hintText: "Lastname",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'This field is required.';
-              }
-              return null;
-            },
-          ),
-          const SizedBox(
-            height: 10,
           ),
           Obx(
             () => ListView.builder(
@@ -108,7 +85,9 @@ class _FormWidgetState extends State<FormWidget> {
               itemBuilder: (context, index) {
                 return Column(
                   children: [
-                    const SizedBox(height: 10),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     HobbyWidget(
                       index: index,
                       onRemove: () {
@@ -129,24 +108,8 @@ class _FormWidgetState extends State<FormWidget> {
           const SizedBox(
             height: 10,
           ),
-          InkWell(
-            borderRadius: BorderRadius.circular(30),
-            child: Container(
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.purple,
-              ),
-              height: 40,
-              child: const Center(
-                child: Text(
-                  "ADD HOBBY",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
+          ButtonComp(
+            text: "ADD HOBBY",
             onTap: () {
               setState(
                 () {

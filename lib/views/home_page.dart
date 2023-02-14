@@ -12,27 +12,12 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Flutter Form Dynamic"),
+        title: const Text(
+          "Flutter Form Dynamic",
+        ),
       ),
       body: Column(
         children: [
-          Card(
-            child: ListTile(
-              leading: const CircleAvatar(
-                child: Text("1"),
-              ),
-              title: const Text("Form with dynamic fields"),
-              subtitle: const Text("A Form with dynamic"),
-              onTap: () {
-                formController.forms.clear();
-                Get.to(
-                  FormPage(
-                    indexClub: formController.clubs.length,
-                  ),
-                );
-              },
-            ),
-          ),
           const SizedBox(
             height: 10,
           ),
@@ -40,7 +25,9 @@ class MyHomePage extends StatelessWidget {
             () => Expanded(
               child: formController.clubs.isEmpty
                   ? const Center(
-                      child: Text("Please add form"),
+                      child: Text(
+                        "Please add form",
+                      ),
                     )
                   : SingleChildScrollView(
                       child: ListView.builder(
@@ -70,6 +57,9 @@ class MyHomePage extends StatelessWidget {
                                     itemBuilder: (context, indexMember) {
                                       List<MemberModel> dataMember =
                                           dataClub[index].memberList;
+                                      List<String> dataHobby =
+                                          dataMember[indexMember].hobbyList;
+                                      var hobbyList = dataHobby.map((e) => e);
                                       return ListTile(
                                         title: Column(
                                           children: [
@@ -79,51 +69,14 @@ class MyHomePage extends StatelessWidget {
                                             Text(
                                               "Lastname : ${dataMember[indexMember].lastName}",
                                             ),
-                                            dataMember[indexMember]
-                                                    .hobbyList
-                                                    .isEmpty
+                                            dataHobby.isEmpty
                                                 ? const Center(
-                                                    child: Text("hobby : -"),
+                                                    child: Text(
+                                                      "hobby : -",
+                                                    ),
                                                   )
-                                                : ListView.builder(
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    itemCount:
-                                                        dataMember[indexMember]
-                                                            .hobbyList
-                                                            .length,
-                                                    itemBuilder:
-                                                        (context, indexHobby) {
-                                                      List<HobbyModel>
-                                                          dataHobby =
-                                                          dataMember[
-                                                                  indexMember]
-                                                              .hobbyList;
-                                                      return ListTile(
-                                                        title: Container(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8),
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20),
-                                                            color:
-                                                                Colors.purple,
-                                                          ),
-                                                          child: Column(
-                                                            children: [
-                                                              Text(
-                                                                "hobby : ${dataHobby[indexHobby].hobby}",
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
+                                                : Text(
+                                                    "hobby : ${hobbyList.join(",")}",
                                                   ),
                                           ],
                                         ),
@@ -140,6 +93,19 @@ class MyHomePage extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(
+          Icons.add,
+        ),
+        onPressed: () {
+          formController.forms.clear();
+          Get.to(
+            FormPage(
+              indexClub: formController.clubs.length,
+            ),
+          );
+        },
       ),
     );
   }
