@@ -6,6 +6,7 @@ import '../controllers/form_controller.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
+
   final FormController formController = Get.put(FormController());
 
   @override

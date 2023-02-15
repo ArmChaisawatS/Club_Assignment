@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class FormModel {
   Widget formWidget;
-  List<FormHobbyModel> listHobbyWidget = [];
+  List<FormHobbyModel> listHobbyWidget;
   FormModel(this.formWidget, this.listHobbyWidget);
 }
 
