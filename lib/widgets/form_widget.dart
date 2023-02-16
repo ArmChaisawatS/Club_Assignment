@@ -93,9 +93,8 @@ class _FormWidgetState extends State<FormWidget> {
                       onRemove: () {
                         setState(
                           () {
-                            formController
-                                .forms[widget.index ?? 0].listHobbyWidget
-                                .removeAt(index);
+                            formController.removeFormhobby(
+                                widget.index ?? 0, index);
                           },
                         );
                       },
@@ -113,15 +112,11 @@ class _FormWidgetState extends State<FormWidget> {
             onTap: () {
               setState(
                 () {
-                  if (formController
-                          .forms[widget.index ?? 0].listHobbyWidget.length <
-                      5) {
-                    formController.forms[widget.index ?? 0].listHobbyWidget.add(
+                  formController.addFormHobby(
                       FormHobbyModel(
                         const HobbyWidget(),
                       ),
-                    );
-                  }
+                      widget.index ?? 0);
                 },
               );
             },

@@ -35,6 +35,7 @@ class FormPage extends StatelessWidget {
                 children: [
                   TextFormFieldComp(
                     controller: clubnamecontroller,
+                    icon: const Icon(Icons.emoji_emotions),
                     title: "Clubname",
                     onSaved: () {
                       formController.addClubname(

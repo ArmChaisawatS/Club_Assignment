@@ -15,6 +15,18 @@ class FormController extends GetxController {
     forms.removeAt(index);
   }
 
+  void addFormHobby(FormHobbyModel hobbyWidget, int index) {
+    if (forms[index].listHobbyWidget.length < 5) {
+      forms[index].listHobbyWidget.add(hobbyWidget);
+    }
+  }
+
+  void removeFormhobby(int index, int indexHobby) {
+    if (forms[index].listHobbyWidget.isNotEmpty) {
+      forms[index].listHobbyWidget.removeAt(indexHobby);
+    }
+  }
+
   void addClubname(ClubModel clubModel) {
     clubs.add(clubModel);
   }
